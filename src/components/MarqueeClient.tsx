@@ -1,6 +1,7 @@
 
 "use client";
 
+import Link from "next/link";
 import MarqueeText from "react-marquee-text";
 import "react-marquee-text/dist/styles.css";
 
@@ -24,14 +25,7 @@ const MarqueeClient = ({ headlines }: Props) => {
     >
       <div className="mx-auto flex w-full max-w-7xl items-stretch">
         {/* Latest News Badge */}
-        <div
-          className="
-            relative z-10 flex shrink-0 items-center gap-1.5
-            bg-red-800 px-2.5 py-2.5
-            sm:gap-2 sm:px-4 sm:py-3
-            lg:px-5
-          "
-        >
+        <div className="relative z-10 flex shrink-0 items-center gap-1.5 bg-red-800 px-2.5 py-2.5 sm:gap-2 sm:px-4 sm:py-3 lg:px-5">
           {/* Live Indicator */}
           <span className="relative flex h-2 w-2 shrink-0 sm:h-2.5 sm:w-2.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-yellow-300 opacity-75" />
@@ -52,14 +46,12 @@ const MarqueeClient = ({ headlines }: Props) => {
                   key={`${headline.id}-${index}`}
                   className="mx-2 inline-flex items-center gap-2 whitespace-nowrap sm:mx-4 sm:gap-3"
                 >
-                  <a
-                    href={headline.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-medium transition-colors hover:text-yellow-200"
+                  <Link
+                    href={`/news/${headline.id}`}
+                    className="font-medium transition-colors hover:text-yellow-200 focus-visible:outline-2 focus-visible:outline-yellow-300"
                   >
                     {headline.title}
-                  </a>
+                  </Link>
 
                   <span aria-hidden="true" className="text-yellow-300">
                     •

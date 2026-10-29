@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 
 type NewsItem = {
@@ -14,14 +13,14 @@ const MostRead = async () => {
       "https://news-api-v2.vercel.app/api/news/most-read",
       {
         next: { revalidate: 300 },
-      }
+      },
     );
 
     if (!res.ok) {
       throw new Error(`Failed to fetch most-read news: ${res.status}`);
     }
 
-    const result: { data: NewsItem[] } = await res.json();
+    const result: { data?: NewsItem[] } = await res.json();
     const mostRead = Array.isArray(result.data) ? result.data : [];
 
     if (mostRead.length === 0) {
@@ -33,73 +32,55 @@ const MostRead = async () => {
     }
 
     return (
-      <section
-        aria-label="সর্বাধিক পঠিত সংবাদ"
-        className="w-full min-w-0"
-      >
+      <section aria-label="সর্বাধিক পঠিত সংবাদ" className="w-full min-w-0">
         <div className="divide-y divide-gray-200">
-          {mostRead.map((news, index) => {
-            const newsUrl = news.link || news.url;
-
-            return (
-              <article
-                key={news.id}
+          {mostRead.map((news, index) => (
+            <article
+              key={news.id}
+              className="
+                group flex min-w-0 items-start gap-3
+                py-3 first:pt-0 last:pb-0
+                sm:gap-4 sm:py-4
+              "
+            >
+              {/* Ranking Number */}
+              <span
+                aria-label={`ক্রমিক ${index + 1}`}
                 className="
-                  group flex min-w-0 items-start gap-3
-                  py-3 first:pt-0 last:pb-0
-                  sm:gap-4 sm:py-4
+                  w-7 shrink-0 pt-0.5
+                  text-xl font-extrabold leading-tight
+                  tabular-nums text-red-600/80
+                  transition-colors group-hover:text-red-700
+                  sm:w-8 sm:text-2xl
                 "
               >
-                {/* Ranking Number */}
-                <span
-                  aria-label={`ক্রমিক ${index + 1}`}
+                {String(index + 1).padStart(2, "0")}
+              </span>
+
+              {/* News Title */}
+              <div className="min-w-0 flex-1">
+                <h3
                   className="
-                    w-7 shrink-0 pt-0.5
-                    text-xl font-extrabold leading-tight
-                    tabular-nums text-red-600/80
-                    transition-colors group-hover:text-red-700
-                    sm:w-8 sm:text-2xl
+                    wrap-break-word text-sm font-semibold leading-6
+                    text-gray-800 transition-colors
+                    group-hover:text-red-600
+                    sm:text-base sm:leading-7
                   "
                 >
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-
-                {/* News Title */}
-                <div className="min-w-0 flex-1">
-                  <h3
+                  <Link
+                    href={`/news/${encodeURIComponent(String(news.id))}`}
                     className="
-                      wrap-break-word text-sm font-semibold leading-6
-                      text-gray-800 transition-colors
-                      group-hover:text-red-600
-                      sm:text-base sm:leading-7
+                      focus-visible:outline-2
+                      focus-visible:outline-red-500
+                      focus-visible:outline-offset-2
                     "
                   >
-                    {newsUrl ? (
-                      newsUrl.startsWith("/") ? (
-                        <Link
-                          href={newsUrl}
-                          className="focus-visible:outline-2 focus-visible:outline-red-500"
-                        >
-                          {news.title}
-                        </Link>
-                      ) : (
-                        <a
-                          href={newsUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="focus-visible:outline-2 focus-visible:outline-red-500"
-                        >
-                          {news.title}
-                        </a>
-                      )
-                    ) : (
-                      news.title
-                    )}
-                  </h3>
-                </div>
-              </article>
-            );
-          })}
+                    {news.title}
+                  </Link>
+                </h3>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
     );

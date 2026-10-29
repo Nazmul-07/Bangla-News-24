@@ -1,4 +1,3 @@
-
 import MainNews from "@/components/MainNews";
 import Marquee from "@/components/Marquee";
 import MostRead from "@/components/MostRead";
@@ -17,12 +16,9 @@ type NewsSection = {
 };
 
 export default async function Home() {
-  const res = await fetch(
-    "https://news-api-v2.vercel.app/api/news/sections",
-    {
-      next: { revalidate: 300 },
-    }
-  );
+  const res = await fetch("https://news-api-v2.vercel.app/api/news/sections", {
+    next: { revalidate: 300 },
+  });
 
   if (!res.ok) {
     throw new Error("Failed to fetch news sections");
@@ -58,10 +54,7 @@ export default async function Home() {
             {/* Other News Sections */}
             <div className="mt-8 space-y-8 sm:mt-10 sm:space-y-10">
               {otherSections.map((section) => (
-                <section
-                  key={section.curationId}
-                  className="min-w-0"
-                >
+                <section key={section.curationId} className="min-w-0">
                   <div className="border-b-2 border-gray-200">
                     <h2 className="inline-block border-b-2 border-red-600 pb-2 text-lg font-bold text-gray-900 sm:text-xl">
                       {section.title}
@@ -79,8 +72,10 @@ export default async function Home() {
           </section>
 
           {/* Most Read Sidebar */}
+
+          {/* Most Read Sidebar */}
           <aside className="min-w-0 lg:col-span-4">
-            <div className="lg:sticky lg:top-6">
+            <div>
               <div className="mb-4 flex items-center gap-3 border-b border-gray-200 pb-3 sm:mb-5">
                 <span className="h-7 w-1.5 shrink-0 rounded-full bg-red-600" />
 
